@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0c0c0e;
+  --surface: #141416;
+  --border: #222226;
+  --green: #00FF88;
+  --green-dim: #00cc6a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --font-sans: var(--font-geist);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-geist);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
