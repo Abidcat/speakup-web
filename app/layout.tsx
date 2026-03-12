@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { Syne, DM_Mono, DM_Sans } from 'next/font/google'
 import './globals.css'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
+const syne   = Syne({ subsets: ['latin'], variable: '--font-syne',    weight: ['400','500','600','700','800'] })
+const dmMono = DM_Mono({ subsets: ['latin'], variable: '--font-dm-mono', weight: ['300','400','500'] })
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans', weight: ['300','400','500'] })
 
 export const metadata: Metadata = {
-  title: 'SpeakUp — Real-Time Speech Coaching',
-  description: 'Live coaching overlay for sales calls, investor pitches, interviews, and presentations. No recording. No bot. No one knows you\'re using it.',
+  title: 'SpeakUp — Real-time Presentation Coaching',
+  description: 'SpeakUp sits invisibly on top of Zoom, Meet, and Teams — catching filler words, tracking pace, and coaching you in real time.',
   openGraph: {
-    title: 'SpeakUp — Real-Time Speech Coaching',
-    description: 'Speak better in every meeting. Live WPM, filler detection, and coaching tips — invisible to everyone else.',
+    title: 'SpeakUp — Real-time Presentation Coaching',
+    description: 'A floating AI coach for every call. No recording. No bot. No one knows you\'re using it.',
     type: 'website',
   },
 }
@@ -17,7 +19,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${geist.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${syne.variable} ${dmMono.variable} ${dmSans.variable}`}>
+        {children}
+      </body>
     </html>
   )
 }
