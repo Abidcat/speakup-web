@@ -146,7 +146,7 @@ export default function Landing() {
       {/* PAIN */}
       <section style={{ padding: '100px 40px', maxWidth: 1080, margin: '0 auto' }}>
         <div style={tag}>The problem</div>
-        <h2 style={{ ...syne, fontSize: 'clamp(36px,5vw,56px)', letterSpacing: '-0.04em', lineHeight: 0.97, marginBottom: 56, maxWidth: 520 }}>Why practice tools don&apos;t actually work</h2>
+        <h2 style={{ ...syne, fontSize: 'clamp(36px,5vw,56px)', letterSpacing: '-0.02em', lineHeight: 1.05, marginBottom: 56, maxWidth: 520 }}>Why practice tools don&apos;t actually work</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: 'var(--border)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
           {PAIN.map(p => (
             <div key={p.n} style={{ background: 'var(--bg)', padding: '40px 36px' }}>
@@ -161,7 +161,7 @@ export default function Landing() {
       {/* FEATURES */}
       <section id="features" style={{ padding: '100px 40px', maxWidth: 1080, margin: '0 auto' }}>
         <div style={tag}>Features</div>
-        <h2 style={{ ...syne, fontSize: 'clamp(36px,5vw,52px)', letterSpacing: '-0.04em', lineHeight: 0.97, marginBottom: 56, maxWidth: 480 }}>Everything in one overlay</h2>
+        <h2 style={{ ...syne, fontSize: 'clamp(36px,5vw,52px)', letterSpacing: '-0.02em', lineHeight: 1.05, marginBottom: 56, maxWidth: 480 }}>Everything in one overlay</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 1, background: 'var(--border)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
           {FEATURES.map(f => (
             <div key={f.title} style={{ background: 'var(--bg)', padding: '34px 28px' }}>
@@ -176,7 +176,7 @@ export default function Landing() {
       {/* TESTIMONIALS */}
       <section style={{ padding: '100px 40px', maxWidth: 1080, margin: '0 auto' }}>
         <div style={tag}>Early users</div>
-        <h2 style={{ ...syne, fontSize: 'clamp(34px,5vw,50px)', letterSpacing: '-0.04em', lineHeight: 0.97, marginBottom: 56 }}>What people are saying</h2>
+        <h2 style={{ ...syne, fontSize: 'clamp(34px,5vw,50px)', letterSpacing: '-0.02em', lineHeight: 1.05, marginBottom: 56 }}>What people are saying</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
           {TESTIMONIALS.map(t => (
             <div key={t.name} style={{ border: '1px solid var(--border)', borderRadius: 14, padding: 28, background: 'var(--surface)' }}>
@@ -196,7 +196,7 @@ export default function Landing() {
       {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 40px 80px', maxWidth: 1080, margin: '0 auto' }}>
         <div style={{ ...tag, textAlign: 'center' }}>Pricing</div>
-        <h2 style={{ ...syne, fontSize: 'clamp(44px,7vw,80px)', letterSpacing: '-0.05em', lineHeight: 0.95, textAlign: 'center', marginBottom: 16 }}>Simple pricing</h2>
+        <h2 style={{ ...syne, fontSize: 'clamp(44px,7vw,80px)', letterSpacing: '-0.03em', lineHeight: 1.0, textAlign: 'center', marginBottom: 16 }}>Simple pricing</h2>
         <p style={{ textAlign: 'center', fontSize: 16, color: 'var(--text2)', marginBottom: 52 }}>Start free. Upgrade when you&apos;re ready.</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, maxWidth: 960, margin: '0 auto' }}>
           {PLANS.map(plan => (
