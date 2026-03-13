@@ -13,14 +13,17 @@ export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const [{ data: sessions }, { data: subscription }, { data: usage }] = await Promise.all([
+  const [{ data: sessions }, { data: subscription }, { data: usage }, { data: profile }] = await Promise.all([
     supabase.from('sessions').select('*').order('created_at', { ascending: false }).limit(50),
     supabase.from('subscriptions').select('plan,status,current_period_end').eq('user_id', user!.id).single(),
     supabase.from('usage').select('session_count').eq('user_id', user!.id).eq('month', new Date().toISOString().slice(0,7)).single(),
+    supabase.from('profiles').select('streak_current,streak_max').eq('id', user!.id).single(),
   ])
 
   const plan = subscription?.plan ?? 'free'
   const count = usage?.session_count ?? 0
+  const streak = profile?.streak_current ?? 0
+  const streakMax = profile?.streak_max ?? 0
 
   // Compute summary stats
   const ss = sessions ?? []
@@ -64,6 +67,17 @@ export default async function DashboardPage() {
               <div style={{ ...mono, fontSize: 9.5, color: 'var(--muted)', marginTop: 4, letterSpacing: '0.04em' } as React.CSSProperties}>{stat.sub}</div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Streak banner */}
+      {streak > 0 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 20px', borderRadius: 12, marginBottom: 16, border: '1px solid rgba(34,197,94,0.15)', background: 'linear-gradient(135deg,rgba(34,197,94,0.06),rgba(34,197,94,0.02))' }}>
+          <span style={{ fontSize: 24, lineHeight: 1 }}>🔥</span>
+          <div>
+            <div style={{ ...syne, fontSize: 22, color: '#22c55e', lineHeight: 1 } as React.CSSProperties}>{streak} day streak</div>
+            <div style={{ ...mono, fontSize: 10, color: 'var(--muted)', marginTop: 3 } as React.CSSProperties}>Best: {streakMax} days</div>
+          </div>
         </div>
       )}
 
