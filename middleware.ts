@@ -25,6 +25,13 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
+  // Redirect logged-in users away from landing page
+  if (user && request.nextUrl.pathname === '/') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
   // Protect /dashboard routes
   if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
     const url = request.nextUrl.clone()

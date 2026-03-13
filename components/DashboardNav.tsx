@@ -28,7 +28,7 @@ export default function DashboardNav({ user }: { user: User }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
         <div style={{ ...syne, fontSize: 17, letterSpacing: '-0.03em', display: 'flex', alignItems: 'center', gap: 7 }}>
           <div style={{ width: 7, height: 7, background: 'var(--accent)', borderRadius: '50%', animation: 'pulse 2s ease-in-out infinite' }} />
-          <a href="/" style={{ color: 'var(--text)', textDecoration: 'none' }}>SpeakUp</a>
+          <a href="/dashboard" style={{ color: 'var(--text)', textDecoration: 'none' }}>SpeakUp</a>
         </div>
         <nav style={{ display: 'flex', gap: 2 }}>
           {NAV.map(link => (
