@@ -161,8 +161,8 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      {/* Speaker ratio (meeting mode only) */}
-      {s.meeting_mode && s.speaker_ratio != null && (
+      {/* Speaker ratio (meeting mode only, hide if 0 — no tracking data) */}
+      {s.meeting_mode && s.speaker_ratio != null && s.speaker_ratio > 0 && (
         <SpeakerRatioBar ratio={s.speaker_ratio} />
       )}
 

@@ -102,7 +102,7 @@ export default function StructuredTranscript({
       </div>
 
       {/* Timeline bar — colored segments by filler density */}
-      <div style={{ height: 6, display: 'flex', background: 'var(--border)' }}>
+      <div style={{ height: 6, position: 'relative', background: 'var(--border)', overflow: 'hidden' }}>
         {utterances.map((u, i) => {
           if (!u.start && !u.end) return null
           const start = u.start ?? 0
