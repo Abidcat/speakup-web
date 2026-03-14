@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import AuthModal from '@/components/AuthModal'
+import CursorGlow from '@/components/CursorGlow'
 
 const PAIN = [
   { n: '01', q: 'Practice is fake pressure.', a: "Rehearsing alone is nothing like presenting to 12 people staring at you. Your nervous system knows the difference — and so does your speech." },
@@ -39,7 +40,8 @@ export default function Landing() {
   const [showAuth, setShowAuth] = useState(false)
 
   return (
-    <main style={{ background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
+    <main style={{ background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh', cursor: 'none' }}>
+      <CursorGlow />
 
       {/* NAV */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', borderBottom: '1px solid var(--border)', background: 'rgba(9,9,11,.75)', backdropFilter: 'blur(24px)' }}>
