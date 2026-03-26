@@ -9,6 +9,8 @@ const syne = { fontFamily: 'var(--font-syne)', fontWeight: 800 } as const
 
 const NAV = [
   { href: '/dashboard', label: 'Sessions' },
+  { href: '/dashboard/scripts', label: 'Scripts' },
+  { href: '/dashboard/team', label: 'Team' },
   { href: '/dashboard/trends', label: 'Trends' },
   { href: '/dashboard/settings', label: 'Settings' },
 ]
@@ -31,11 +33,16 @@ export default function DashboardNav({ user }: { user: User }) {
           <a href="/dashboard" style={{ color: 'var(--text)', textDecoration: 'none' }}>SpeakUp</a>
         </div>
         <nav style={{ display: 'flex', gap: 2 }}>
-          {NAV.map(link => (
-            <a key={link.href} href={link.href} style={{ fontSize: 13.5, padding: '5px 12px', borderRadius: 7, textDecoration: 'none', color: pathname === link.href ? 'var(--text)' : 'var(--text2)', background: pathname === link.href ? 'var(--surface2)' : 'transparent', border: pathname === link.href ? '1px solid var(--border)' : '1px solid transparent' }}>
-              {link.label}
-            </a>
-          ))}
+          {NAV.map(link => {
+            const active = link.href === '/dashboard'
+              ? pathname === '/dashboard'
+              : pathname.startsWith(link.href)
+            return (
+              <a key={link.href} href={link.href} style={{ fontSize: 13.5, padding: '5px 12px', borderRadius: 7, textDecoration: 'none', color: active ? 'var(--text)' : 'var(--text2)', background: active ? 'var(--surface2)' : 'transparent', border: active ? '1px solid var(--border)' : '1px solid transparent' }}>
+                {link.label}
+              </a>
+            )
+          })}
         </nav>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

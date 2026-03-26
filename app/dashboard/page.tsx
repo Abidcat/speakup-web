@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import SessionCard from '@/components/SessionCard'
+import SessionList from '@/components/SessionList'
 import UsageBanner from '@/components/UsageBanner'
 
 const mono = { fontFamily: 'var(--font-dm-mono)' }
@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
 
   const [{ data: sessions }, { data: subscription }, { data: usage }, { data: profile }] = await Promise.all([
-    supabase.from('sessions').select('*').order('created_at', { ascending: false }).limit(50),
+    supabase.from('sessions').select('*').order('created_at', { ascending: false }).limit(200),
     supabase.from('subscriptions').select('plan,status,current_period_end').eq('user_id', user!.id).single(),
     supabase.from('usage').select('session_count').eq('user_id', user!.id).eq('month', new Date().toISOString().slice(0,7)).single(),
     supabase.from('profiles').select('streak_current,streak_max').eq('id', user!.id).single(),
@@ -25,7 +25,6 @@ export default async function DashboardPage() {
   const streak = profile?.streak_current ?? 0
   const streakMax = profile?.streak_max ?? 0
 
-  // Compute summary stats
   const ss = sessions ?? []
   const totalSessions = ss.length
   const avgWpm = avg(ss.filter(s => s.wpm_avg).map(s => s.wpm_avg!))
@@ -52,7 +51,7 @@ export default async function DashboardPage() {
         </a>
       </div>
 
-      {/* Summary stats — only if sessions exist */}
+      {/* Summary stats */}
       {hasStats && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 24 }}>
           {[
@@ -83,7 +82,7 @@ export default async function DashboardPage() {
 
       {plan === 'free' && <UsageBanner count={count} limit={3} />}
 
-      {/* Session list */}
+      {/* Session list with search/filter */}
       {!sessions || sessions.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '80px 40px', borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)' }}>
           <div style={{ fontSize: 36, marginBottom: 16 }}>🎙</div>
@@ -91,14 +90,7 @@ export default async function DashboardPage() {
           <p style={{ fontFamily: 'var(--font-dm-mono)', fontSize: 11, color: 'var(--muted)', letterSpacing: '0.04em' }}>Open the SpeakUp app and start your first session</p>
         </div>
       ) : (
-        <>
-          <div style={{ ...mono, fontSize: 9.5, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 } as React.CSSProperties}>
-            Recent — {totalSessions} session{totalSessions !== 1 ? 's' : ''}
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {sessions.map(s => <SessionCard key={s.id} session={s} />)}
-          </div>
-        </>
+        <SessionList sessions={ss} />
       )}
     </div>
   )

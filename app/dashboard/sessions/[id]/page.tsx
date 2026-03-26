@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import StructuredTranscript from '@/components/StructuredTranscript'
 import CoachingLoader from '@/components/CoachingLoader'
+import ExportSessionButton from '@/components/ExportSessionButton'
+import ShareButton from '@/components/ShareButton'
 
 const mono = { fontFamily: 'var(--font-dm-mono)' } as const
 const syne = { fontFamily: 'var(--font-syne)', fontWeight: 800 } as const
@@ -55,14 +57,8 @@ function CoachingReport({ coaching }: { coaching: AiCoaching }) {
           claude
         </span>
       </div>
-
       <div style={{ padding: '20px' }}>
-        {/* Summary */}
-        <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--text2)', marginBottom: 20, marginTop: 0 }}>
-          {coaching.summary}
-        </p>
-
-        {/* Strength */}
+        <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--text2)', marginBottom: 20, marginTop: 0 }}>{coaching.summary}</p>
         <div style={{ border: '1px solid rgba(34,197,94,0.2)', borderRadius: 10, padding: '16px 18px', background: 'rgba(34,197,94,0.04)', marginBottom: 10 }}>
           <div style={{ ...mono, fontSize: 9, color: '#22c55e', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>Strength</div>
           <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.65, marginBottom: 10, marginTop: 0 }}>{coaching.strength.observation}</p>
@@ -70,8 +66,6 @@ function CoachingReport({ coaching }: { coaching: AiCoaching }) {
             <p style={{ ...mono, fontSize: 11, color: 'var(--muted)', fontStyle: 'italic', lineHeight: 1.6, margin: 0 }}>&ldquo;{coaching.strength.quote}&rdquo;</p>
           </blockquote>
         </div>
-
-        {/* Improvement */}
         <div style={{ border: '1px solid rgba(249,115,22,0.2)', borderRadius: 10, padding: '16px 18px', background: 'rgba(249,115,22,0.04)', marginBottom: 10 }}>
           <div style={{ ...mono, fontSize: 9, color: '#f97316', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>Improve</div>
           <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.65, marginBottom: 10, marginTop: 0 }}>{coaching.improvement.observation}</p>
@@ -79,8 +73,6 @@ function CoachingReport({ coaching }: { coaching: AiCoaching }) {
             <p style={{ ...mono, fontSize: 11, color: 'var(--muted)', fontStyle: 'italic', lineHeight: 1.6, margin: 0 }}>&ldquo;{coaching.improvement.quote}&rdquo;</p>
           </blockquote>
         </div>
-
-        {/* Drill */}
         <div style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '16px 18px', background: 'var(--bg)' }}>
           <div style={{ ...mono, fontSize: 9, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>Daily Drill</div>
           <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.65, margin: 0 }}>{coaching.drill}</p>
@@ -119,6 +111,22 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   const utterances = s.utterances ?? null
   const aiCoaching: AiCoaching | null = s.ai_coaching ?? null
 
+  // Build export-friendly session object
+  const exportSession = {
+    session_type: s.session_type,
+    goal: s.goal,
+    grade: s.grade,
+    duration_sec: s.duration_sec,
+    wpm_avg: s.wpm_avg,
+    confidence: s.confidence,
+    filler_count: s.filler_count,
+    filler_map: s.filler_map,
+    word_count: s.word_count,
+    ai_coaching: s.ai_coaching,
+    tip_history: s.tip_history,
+    created_at: s.created_at,
+  }
+
   return (
     <div style={{ maxWidth: 800, margin: '0 auto' }}>
       {/* Back */}
@@ -128,13 +136,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 24, marginBottom: 40, paddingBottom: 40, borderBottom: '1px solid var(--border)' }}>
-        <div style={{
-          width: 88, height: 88, borderRadius: '50%', flexShrink: 0,
-          border: `2px solid ${gradeColor}`,
-          background: `${gradeColor}10`,
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          boxShadow: `0 0 32px ${gradeColor}20`,
-        }}>
+        <div style={{ width: 88, height: 88, borderRadius: '50%', flexShrink: 0, border: `2px solid ${gradeColor}`, background: `${gradeColor}10`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: `0 0 32px ${gradeColor}20` }}>
           <span style={{ ...syne, fontSize: 40, color: gradeColor, lineHeight: 1 }}>{grade}</span>
         </div>
 
@@ -159,33 +161,24 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
             Duration: {fmt(s.duration_sec)} · {s.word_count ?? 0} words {s.has_script ? '· Script used' : ''}
           </div>
         </div>
+
+        {/* Actions */}
+        <div style={{ display: 'flex', gap: 8, flexShrink: 0, marginTop: 4 }}>
+          <ExportSessionButton session={exportSession} />
+          <ShareButton sessionId={id} />
+        </div>
       </div>
 
-      {/* Speaker ratio (meeting mode only, hide if 0 — no tracking data) */}
+      {/* Speaker ratio */}
       {s.meeting_mode && s.speaker_ratio != null && s.speaker_ratio > 0 && (
         <SpeakerRatioBar ratio={s.speaker_ratio} />
       )}
 
       {/* Stats grid */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 24 }}>
-        <StatBlock
-          label="Avg WPM"
-          value={s.wpm_avg?.toFixed(0) ?? '—'}
-          sub={wpmStatus ?? 'No data'}
-          color={wpmColor}
-        />
-        <StatBlock
-          label="Confidence"
-          value={s.confidence?.toFixed(0) ?? '—'}
-          sub={s.confidence ? (s.confidence >= 75 ? 'Strong' : s.confidence >= 50 ? 'Building' : 'Keep going') : 'No data'}
-          color={confColor}
-        />
-        <StatBlock
-          label="Filler words"
-          value={String(s.filler_count ?? 0)}
-          sub={(s.filler_count ?? 0) > 5 ? 'Watch out' : 'Clean'}
-          color={fillColor}
-        />
+        <StatBlock label="Avg WPM" value={s.wpm_avg?.toFixed(0) ?? '—'} sub={wpmStatus ?? 'No data'} color={wpmColor} />
+        <StatBlock label="Confidence" value={s.confidence?.toFixed(0) ?? '—'} sub={s.confidence ? (s.confidence >= 75 ? 'Strong' : s.confidence >= 50 ? 'Building' : 'Keep going') : 'No data'} color={confColor} />
+        <StatBlock label="Filler words" value={String(s.filler_count ?? 0)} sub={(s.filler_count ?? 0) > 5 ? 'Watch out' : 'Clean'} color={fillColor} />
       </div>
 
       {/* AI Coaching */}
@@ -202,12 +195,11 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {Object.entries(fillerMap).sort((a, b) => b[1] - a[1]).map(([word, count]) => {
               const max = Math.max(...Object.values(fillerMap))
-              const pct = (count / max) * 100
               return (
                 <div key={word} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{ ...mono, fontSize: 12, color: 'var(--text2)', minWidth: 48 }}>&ldquo;{word}&rdquo;</div>
                   <div style={{ flex: 1, height: 4, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${pct}%`, background: count > 5 ? 'var(--red)' : 'var(--accent)', borderRadius: 2 }} />
+                    <div style={{ height: '100%', width: `${(count / max) * 100}%`, background: count > 5 ? 'var(--red)' : 'var(--accent)', borderRadius: 2 }} />
                   </div>
                   <div style={{ ...mono, fontSize: 12, color: count > 5 ? 'var(--red)' : 'var(--text2)', minWidth: 20, textAlign: 'right' }}>{count}</div>
                 </div>
