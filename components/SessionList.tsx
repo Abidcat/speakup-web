@@ -8,7 +8,7 @@ const mono = { fontFamily: 'var(--font-dm-mono)' } as const
 type Session = {
   id: string
   session_type: string
-  goal?: string
+  goal: string | null
   grade?: string
   wpm_avg?: number
   confidence?: number
