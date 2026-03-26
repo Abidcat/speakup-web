@@ -9,13 +9,13 @@ type Session = {
   id: string
   session_type: string
   goal: string | null
-  grade?: string
-  wpm_avg?: number
-  confidence?: number
-  filler_count?: number
+  grade: string | null
+  wpm_avg: number | null
+  confidence: number | null
+  filler_count: number | null
   duration_sec: number
   created_at: string
-  meeting_mode?: boolean
+  meeting_mode: boolean | null
 }
 
 const GRADES = ['S', 'A', 'B', 'C', 'D']

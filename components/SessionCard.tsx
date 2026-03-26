@@ -3,7 +3,7 @@ const syne = { fontFamily: 'var(--font-syne)', fontWeight: 800 } as const
 
 type Session = {
   id: string; session_type: string; goal: string | null; duration_sec: number
-  wpm_avg: number | null; confidence: number | null; filler_count: number
+  wpm_avg: number | null; confidence: number | null; filler_count: number | null
   grade: string | null; created_at: string
 }
 
@@ -39,7 +39,7 @@ export default function SessionCard({ session: s }: { session: Session }) {
           {[
             { label: 'WPM',  val: s.wpm_avg?.toFixed(0) ?? '—', warn: false },
             { label: 'CONF', val: s.confidence?.toFixed(0) ?? '—', warn: false },
-            { label: 'FILL', val: String(s.filler_count), warn: s.filler_count > 5 },
+            { label: 'FILL', val: s.filler_count != null ? String(s.filler_count) : '—', warn: (s.filler_count ?? 0) > 5 },
           ].map(stat => (
             <div key={stat.label} style={{ textAlign: 'center' }}>
               <div style={{ ...mono, fontSize: 9, color: 'var(--muted)', letterSpacing: '0.07em', marginBottom: 3 }}>{stat.label}</div>
