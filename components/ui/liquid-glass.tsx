@@ -9,6 +9,7 @@ interface GlassEffectProps {
   style?: React.CSSProperties;
   href?: string;
   target?: string;
+  dark?: boolean; // dark-mode variant — subtle highlights, reduced white overlay
 }
 
 interface DockIcon {
@@ -24,6 +25,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
   style = {},
   href,
   target = "_blank",
+  dark = false,
 }) => {
   const glassStyle: React.CSSProperties = {
     boxShadow: "0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1)",
@@ -47,13 +49,14 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
       />
       <div
         className="absolute inset-0 z-10"
-        style={{ background: "rgba(255, 255, 255, 0.25)" }}
+        style={{ background: dark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.25)" }}
       />
       <div
         className="absolute inset-0 z-20 rounded-3xl overflow-hidden"
         style={{
-          boxShadow:
-            "inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5)",
+          boxShadow: dark
+            ? "inset 1px 1px 0 rgba(255,255,255,0.12), inset -1px -1px 0 rgba(255,255,255,0.05)"
+            : "inset 2px 2px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 1px 1px rgba(255,255,255,0.5)",
         }}
       />
 

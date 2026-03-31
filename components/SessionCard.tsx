@@ -1,3 +1,7 @@
+'use client'
+
+import { GlassEffect } from '@/components/ui/liquid-glass'
+
 const mono = { fontFamily: 'var(--font-dm-mono)' } as const
 const syne = { fontFamily: 'var(--font-syne)', fontWeight: 800 } as const
 
@@ -19,7 +23,8 @@ export default function SessionCard({ session: s }: { session: Session }) {
 
   return (
     <a href={`/dashboard/sessions/${s.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-      <div className="session-card" style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16, background: 'var(--surface)', transition: 'border-color .2s, background .2s', cursor: 'pointer' }}>
+      <GlassEffect dark style={{ borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)' }}>
+      <div className="session-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16, transition: 'border-color .2s, background .2s', cursor: 'pointer' }}>
         {/* Grade */}
         <div style={{ width: 44, height: 44, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: 'var(--bg)', border: '1px solid var(--border)' }}>
           <span style={{ ...syne, fontSize: 18, letterSpacing: '-0.04em', color: GRADE_COLOR[grade] ?? 'var(--muted)' }}>{grade}</span>
@@ -49,6 +54,7 @@ export default function SessionCard({ session: s }: { session: Session }) {
           <span style={{ color: 'var(--muted)', fontSize: 16, opacity: 0.4 }}>›</span>
         </div>
       </div>
+      </GlassEffect>
     </a>
   )
 }

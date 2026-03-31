@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import AuthModal from '@/components/AuthModal'
 import CursorGlow from '@/components/CursorGlow'
+import { GlassEffect } from '@/components/ui/liquid-glass'
 
 const PAIN = [
   { n: '01', q: 'Practice is fake pressure.', a: "Rehearsing alone is nothing like presenting to 12 people staring at you. Your nervous system knows the difference — and so does your speech." },
@@ -44,7 +45,7 @@ export default function Landing() {
       <CursorGlow />
 
       {/* NAV */}
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', borderBottom: '1px solid var(--border)', background: 'rgba(9,9,11,.75)', backdropFilter: 'blur(24px)' }}>
+      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(9,9,11,.6)', backdropFilter: 'blur(24px)', boxShadow: 'inset 0 -1px 0 rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.05)' }}>
         <div style={{ ...syne, fontSize: 17, letterSpacing: '-0.03em', display: 'flex', alignItems: 'center', gap: 7 }}>
           <div style={{ width: 7, height: 7, background: 'var(--accent)', borderRadius: '50%', animation: 'pulse 2s ease-in-out infinite' }} />
           SpeakUp
@@ -78,12 +79,16 @@ export default function Landing() {
         </p>
 
         <div style={{ display: 'flex', gap: 14, animation: 'fadeUp .6s .3s ease both' }}>
-          <button onClick={() => setShowAuth(true)} style={{ padding: '13px 26px', borderRadius: 9, fontSize: 14, fontWeight: 500, cursor: 'pointer', background: 'var(--accent)', color: '#09090b', border: 'none', fontFamily: 'var(--font-dm-sans)' }}>
-            Download for Mac — Free
-          </button>
-          <a href="#features" style={{ padding: '13px 26px', borderRadius: 9, fontSize: 14, fontWeight: 500, cursor: 'pointer', background: 'transparent', color: 'var(--text2)', border: '1px solid var(--border)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans)' }}>
-            See how it works →
-          </a>
+          <GlassEffect style={{ borderRadius: 9 }}>
+            <button onClick={() => setShowAuth(true)} style={{ padding: '13px 26px', borderRadius: 9, fontSize: 14, fontWeight: 500, cursor: 'pointer', background: 'var(--accent)', color: '#09090b', border: 'none', fontFamily: 'var(--font-dm-sans)', position: 'relative', zIndex: 1 }}>
+              Download for Mac — Free
+            </button>
+          </GlassEffect>
+          <GlassEffect dark style={{ borderRadius: 9 }}>
+            <a href="#features" style={{ padding: '13px 26px', borderRadius: 9, fontSize: 14, fontWeight: 500, cursor: 'pointer', color: 'var(--text2)', textDecoration: 'none', fontFamily: 'var(--font-dm-sans)', display: 'block', position: 'relative', zIndex: 1 }}>
+              See how it works →
+            </a>
+          </GlassEffect>
         </div>
 
         {/* Demo window */}
@@ -181,16 +186,18 @@ export default function Landing() {
         <h2 style={{ ...syne, fontSize: 'clamp(34px,5vw,50px)', letterSpacing: '-0.02em', lineHeight: 1.05, marginBottom: 56 }}>What people are saying</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
           {TESTIMONIALS.map(t => (
-            <div key={t.name} style={{ border: '1px solid var(--border)', borderRadius: 14, padding: 28, background: 'var(--surface)' }}>
-              <p style={{ fontSize: 14.5, lineHeight: 1.75, color: 'var(--text2)', marginBottom: 20 }}>&ldquo;{t.quote}&rdquo;</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>{t.avatar}</div>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 500 }}>{t.name}</div>
-                  <div style={{ ...mono, fontSize: 11.5, color: 'var(--muted)' }}>{t.role}</div>
+            <GlassEffect key={t.name} dark style={{ borderRadius: 14, background: 'var(--surface)' }}>
+              <div style={{ padding: 28 }}>
+                <p style={{ fontSize: 14.5, lineHeight: 1.75, color: 'var(--text2)', marginBottom: 20 }}>&ldquo;{t.quote}&rdquo;</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>{t.avatar}</div>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500 }}>{t.name}</div>
+                    <div style={{ ...mono, fontSize: 11.5, color: 'var(--muted)' }}>{t.role}</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </GlassEffect>
           ))}
         </div>
       </section>
@@ -201,9 +208,32 @@ export default function Landing() {
         <h2 style={{ ...syne, fontSize: 'clamp(44px,7vw,80px)', letterSpacing: '-0.03em', lineHeight: 1.0, textAlign: 'center', marginBottom: 16 }}>Simple pricing</h2>
         <p style={{ textAlign: 'center', fontSize: 16, color: 'var(--text2)', marginBottom: 52 }}>Start free. Upgrade when you&apos;re ready.</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, maxWidth: 960, margin: '0 auto' }}>
-          {PLANS.map(plan => (
-            <div key={plan.name} style={{ border: `1px solid ${plan.featured ? 'rgba(34,197,94,.25)' : 'var(--border)'}`, borderRadius: 16, padding: 36, background: plan.featured ? 'var(--surface2)' : 'var(--surface)', position: 'relative', overflow: 'hidden' }}>
-              {plan.featured && <><div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 180, height: 1, background: 'linear-gradient(90deg,transparent,rgba(34,197,94,.6),transparent)' }} /><div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#09090b', ...mono, fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 100 }}>Popular</div></>}
+          {PLANS.map(plan => plan.featured ? (
+            <GlassEffect key={plan.name} dark style={{ borderRadius: 16, border: '1px solid rgba(34,197,94,.2)', background: 'var(--surface2)' }}>
+              <div style={{ padding: 36, position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 180, height: 1, background: 'linear-gradient(90deg,transparent,rgba(34,197,94,.6),transparent)' }} />
+                <div style={{ position: 'absolute', top: 20, right: 20, background: 'var(--accent)', color: '#09090b', ...mono, fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 100 }}>Popular</div>
+                <div style={{ ...mono, fontSize: 10.5, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>{plan.name}</div>
+                <div style={{ ...syne, letterSpacing: '-0.05em', lineHeight: 1, marginBottom: 4 }}>
+                  <sup style={{ fontSize: 20, verticalAlign: 'super', fontWeight: 600 }}>$</sup>
+                  <span style={{ fontSize: 48 }}>{plan.price}</span>
+                </div>
+                <div style={{ ...mono, fontSize: 12, color: 'var(--muted)', marginBottom: 28 }}>/month</div>
+                <div style={{ height: 1, background: 'var(--border)', marginBottom: 24 }} />
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 32, padding: 0 }}>
+                  {plan.features.map(f => (
+                    <li key={f} style={{ fontSize: 13.5, color: 'var(--text2)', display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                      <span style={{ color: 'var(--accent)', fontSize: 12, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>{f}
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => setShowAuth(true)} style={{ width: '100%', padding: 13, borderRadius: 9, fontFamily: 'var(--font-dm-sans)', fontSize: 14, fontWeight: 500, cursor: 'pointer', border: 'none', background: 'var(--accent)', color: '#09090b' }}>
+                  {plan.cta}
+                </button>
+              </div>
+            </GlassEffect>
+          ) : (
+            <div key={plan.name} style={{ border: '1px solid var(--border)', borderRadius: 16, padding: 36, background: 'var(--surface)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ ...mono, fontSize: 10.5, color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>{plan.name}</div>
               <div style={{ ...syne, letterSpacing: '-0.05em', lineHeight: 1, marginBottom: 4 }}>
                 <sup style={{ fontSize: 20, verticalAlign: 'super', fontWeight: 600 }}>$</sup>
@@ -218,7 +248,7 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <button onClick={() => setShowAuth(true)} style={{ width: '100%', padding: 13, borderRadius: 9, fontFamily: 'var(--font-dm-sans)', fontSize: 14, fontWeight: 500, cursor: 'pointer', border: plan.featured ? 'none' : '1px solid var(--border)', background: plan.featured ? 'var(--accent)' : 'transparent', color: plan.featured ? '#09090b' : 'var(--text2)' }}>
+              <button onClick={() => setShowAuth(true)} style={{ width: '100%', padding: 13, borderRadius: 9, fontFamily: 'var(--font-dm-sans)', fontSize: 14, fontWeight: 500, cursor: 'pointer', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text2)' }}>
                 {plan.cta}
               </button>
             </div>
